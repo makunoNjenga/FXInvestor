@@ -77,4 +77,6 @@ class PageController extends Controller
 		}
 		return Carbon::parse($date)->diffForHumans();
 	}
+
+
 }

@@ -19,3 +19,7 @@ Route::get('/', function () {
  * Log-viewer
  */
 Route::get('sys/log/viewer', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
