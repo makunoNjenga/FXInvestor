@@ -3,13 +3,16 @@
 @section('content')
     <div class="p-2">
         <h5 class="mb-5 text-center">Sign in to Invest.</h5>
-        <form class="form-horizontal" action="https://themesdesign.in/apaxy/layouts/vertical/index.html">
-
+        <form class="form-horizontal" action="{{ route('login') }}" method="post">
+@csrf
             <div class="row">
+                <div class="col-md-12">
+                    @include('inc.messages')
+                </div>
                 <div class="col-md-12">
                     <div class="form-group mb-4">
                         <label for="userpassword">Pin</label>
-                        <input type="password" class="form-control border-radius-20" id="userpassword" placeholder="Enter password">
+                        <input type="password" name="pin" class="form-control border-radius-20" id="userpassword" placeholder="Enter password">
                     </div>
 
                     <div class="row">
