@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="form-group mb-4">
                         <label for="userpassword">Pin</label>
-                        <input type="password" name="pin" class="form-control border-radius-20" id="userpassword" placeholder="Enter password">
+                        <input type="password" name="pin" class="form-control border-radius-20" id="userpassword" placeholder="Enter pin">
                     </div>
 
                     <div class="row">
@@ -20,12 +20,12 @@
                         </div>
                         <div class="col-md-6 col-sm-6">
                             <div class="text-md-right mt-3 mt-md-0">
-                                <a href="auth-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your Pin?</a>
+                                <a href="" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your Pin?</a>
                             </div>
                         </div>
                     </div>
                     <div class="mt-4">
-                        <button class="btn btn-success btn-block waves-effect waves-light" type="submit">Log In</button>
+                        <button class="btn btn-success btn-block waves-effect waves-light border-radius-20" type="submit">Log In</button>
                     </div>
                     <div class="mt-4 text-center">
                             <a href="{{ route('register') }}" class="text-muted"><i class="mdi mdi-account-circle mr-1"></i> Create an account</a>

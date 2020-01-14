@@ -35,3 +35,15 @@ Route::post('/profile', 'HomeController@postProfile')->name('profile');
 
 Route::get('/contact/support', 'HomeController@contactAdmin')->name('contact.support');
 Route::post('/contact/support', 'HomeController@postContactAdmin')->name('contact.support');
+
+Route::group([
+	'prefix' => 'admin',
+], function () {
+	Route::get('/login', 'Auth\LoginController@getAdminLogin')->name('admin.login');
+	Route::post('/login', 'Auth\LoginController@postAdminLogin')->name('admin.login');
+	Route::get('/home', 'AdminController@home')->name('admin.home');
+	Route::get('/logout', 'AdminController@logout')->name('admin.logout');
+
+	Route::get('/sport/betting', 'AdminController@sportBetting')->name('admin.sport.betting');
+	Route::post('/sport/betting', 'AdminController@postSportBetting')->name('admin.sport.betting');
+});

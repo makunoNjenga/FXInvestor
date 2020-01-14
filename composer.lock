@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f104fa60c8c502f0c5102ab8d64e47b6",
+    "content-hash": "3e05c0c9d2fd56ae7c252e5d8ed1f64c",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -2327,21 +2327,24 @@
         },
         {
             "name": "realrashid/sweet-alert",
-            "version": "v2.0",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/realrashid/sweet-alert.git",
-                "reference": "53bb75c83a4ceb3263ae7cbd71404b86285a5b5b"
+                "reference": "5e0d237904c25944de5530bca1c577ec3fd93190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/realrashid/sweet-alert/zipball/53bb75c83a4ceb3263ae7cbd71404b86285a5b5b",
-                "reference": "53bb75c83a4ceb3263ae7cbd71404b86285a5b5b",
+                "url": "https://api.github.com/repos/realrashid/sweet-alert/zipball/5e0d237904c25944de5530bca1c577ec3fd93190",
+                "reference": "5e0d237904c25944de5530bca1c577ec3fd93190",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "~5.4.0|~5.8.0|~5.9.0",
-                "php": "~5.6|~7.0|~7.1.3"
+                "laravel/framework": "~5.4.0|~5.8.0|~5.9.0|^6.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "symfony/thanks": "^1.0"
             },
             "type": "library",
             "extra": {
@@ -2369,9 +2372,9 @@
             "authors": [
                 {
                     "name": "Rashid Ali",
-                    "role": "Developer",
                     "email": "realrashid05@gmail.com",
-                    "homepage": "https://realrashid.com"
+                    "homepage": "https://realrashid.com",
+                    "role": "Developer"
                 }
             ],
             "description": "A BEAUTIFUL, RESPONSIVE, CUSTOMIZABLE, ACCESSIBLE (WAI-ARIA) REPLACEMENT FOR JAVASCRIPT'S POPUP BOXES FOR LARAVEL BY RASHID ALI",
@@ -2386,7 +2389,7 @@
                 "sweet-alert2",
                 "toast"
             ],
-            "time": "2019-06-14T12:04:23+00:00"
+            "time": "2020-01-07T18:28:57+00:00"
         },
         {
             "name": "snowfire/beautymail",

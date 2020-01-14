@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Monolog\Formatter\JsonFormatter;
@@ -78,5 +79,8 @@ class PageController extends Controller
 		return Carbon::parse($date)->diffForHumans();
 	}
 
+	public function bulkNotificationsToAllUsers(){
+
+	}
 
 }

@@ -6,12 +6,12 @@
 		    {{--Unlock your full potential by joining our premium services to get real time feeds as they happen in our services--}}
 	    {{--</a>--}}
 
-	    <span class="alert alert-info text-center">
+	    <span class="alert alert-info text-center col-sm-12">
 		    <label>Todays Pick</label><br>
 		    Unlock your full potential by purchasing premium ODDS
 	    </span>
 
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
                     <div class="media">
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
                     <div class="media">
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <div class="col-sm-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
                     <div class="media">

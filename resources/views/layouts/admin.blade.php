@@ -23,6 +23,8 @@
 	<!-- App Css-->
 	<link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css"/>
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css"/>
+	<link href="{{ asset('css/toast.css') }}" rel="stylesheet" type="text/css"/>
+	<link href="{{ asset('js/toast.js') }}" rel="stylesheet" type="text/css"/>
 </head>
 
 <body data-topbar="colored">
@@ -145,22 +147,13 @@
 				<!-- Left Menu Start -->
 				<ul class="metismenu list-unstyled" id="side-menu">
 					<li class="menu-title">Finance</li>
-
-					<li>
-						<a href="{{ route('top.up') }}" class="waves-effect">
-							<i class="mdi mdi-currency-usd"></i>
-							<span>Top Up</span>
-						</a>
-					</li>
-
 					<li>
 						<a href="{{ route('statements') }}" class="waves-effect">
 							<i class="mdi mdi-server"></i>
-							<span>Statement</span>
+							<span>Statements</span>
 						</a>
 					</li>
-					<li class="menu-title">Investments</li>
-
+					<li class="menu-title">Investments Data</li>
 					<li>
 						<a href="{{ route('sport.betting') }}" class="waves-effect">
 							<i class="mdi mdi-view-dashboard"></i><span
@@ -177,30 +170,16 @@
 						</a>
 					</li>
 
-					<li>
-						<a href="{{ route('history') }}" class="waves-effect">
-							<i class="mdi mdi-content-save"></i>
-							<span>History</span>
-						</a>
-					</li>
-
 					<li class="menu-title">Info Panel</li>
-
-					<li>
-						<a href="{{ route('profile') }}" class="waves-effect">
-							<i class="mdi mdi-face-profile"></i>
-							<span>Profile</span>
-						</a>
-					</li>
 					<li>
 						<a href="{{ route('contact.support') }}" class="waves-effect">
 							<i class="mdi mdi-bullhorn"></i>
-							<span>Contact Support</span>
+							<span>Contacts </span>
 						</a>
 					</li>
 					<div class="dropdown-divider"></div>
 					<li>
-						<a href="{{ route('custom.logout') }}" class="waves-effect">
+						<a href="{{ route('admin.logout') }}" class="waves-effect">
 							<i class="mdi mdi-logout"></i>
 							<span>Logout</span>
 						</a>
@@ -228,7 +207,7 @@
 						<div class="col-sm-12">
 							<a href="{{route('home')}}" ><i class="mdi mdi-home mdi-36px margin-right-30 "></i> </a>
 							<a href="{{route('trading.signals')}}" ><i class="mdi mdi-chart-line mdi-36px margin-right-30"></i> </a>
-							<a href="{{route('sport.betting')}}" ><i class="mdi mdi-soccer mdi-36px text-black"></i> </a>
+							<a href="{{route('admin.sport.betting')}}" ><i class="mdi mdi-soccer mdi-36px text-black"></i> </a>
 						</div>
 					</div>
 				{{--</div>--}}
@@ -256,8 +235,15 @@
 	$(window).load(function() {
 		$(".loader").fadeOut("slow");
 	});
-</script>
 
+	function toast(message, type){
+		Toastify({
+			text: message,
+			backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+			className: type,
+		}).showToast();
+	}
+</script>
 <!-- JAVASCRIPT -->
 <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -275,7 +261,8 @@
 <script src="{{ asset('assets/libs/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
 
 <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
-
 <script src="{{ asset('assets/js/app.js') }}"></script>
+@include('sweetalert::alert')
+
 </body>
 </html>
