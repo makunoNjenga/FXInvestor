@@ -52,6 +52,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'numeric', 'digits:10', 'unique:users'],
+            'pin' => ['required', 'numeric', 'digits:4'],
         ]);
     }
 
@@ -62,15 +63,15 @@ class RegisterController extends Controller
 	 */
     protected function create(array $data)
     {
-	    $pin = $this->generatePin();
+//	    $pin = $this->generatePin();
          $user = User::query()->create([
             'name' => $data['name'],
             'phone_number' => $data['phone_number'],
-	        'pin'=>$pin
+	        'pin'=>Hash::make($data['pin'])
         ]);
 
          //send sms and notification
-	    $message = "Your login pin is $pin. Keep it a secret.";
+//	    $message = "Your login pin is $pin. Keep it a secret.";
 //	    PageController::sendNotification($user->id,'Login Pin', $message);
 
 	    return $user;

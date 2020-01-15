@@ -182,6 +182,7 @@ return [
 	    RealRashid\SweetAlert\SweetAlertServiceProvider::class,
 	    Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 	    Snowfire\Beautymail\BeautymailServiceProvider::class,
+	    Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
     ],
 

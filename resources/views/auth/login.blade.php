@@ -11,6 +11,15 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group mb-4">
+                        <label for="userpassword">Phonenumber</label>
+                        <input type="number" class="form-control border-radius-20 {{ $errors->has('phone_number') ? ' has-error' : '' }}" id="userpassword" placeholder="Enter phonenumber" name="phone_number" value="{{ old('phone_number') }}">
+                        @if ($errors->has('phone_number'))
+                            <span class="help-block text-danger">
+                                        <strong>{{ $errors->first('phone_number') }}</strong>
+                                    </span>
+                        @endif
+                    </div>
+                    <div class="form-group mb-4">
                         <label for="userpassword">Pin</label>
                         <input type="password" name="pin" class="form-control border-radius-20" id="userpassword" placeholder="Enter pin">
                     </div>

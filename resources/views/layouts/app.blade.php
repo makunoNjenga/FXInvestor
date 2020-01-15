@@ -1,3 +1,9 @@
+<?php
+$user = auth()->user();
+$notifications = \App\Notif::query()->where('user_id',$user->id)->orderByDesc('created_at')->get();
+$notificationsCount = $notifications->where('read',false)->count();
+$bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -44,11 +50,14 @@
 
 			<div class="d-flex">
 				<div class="dropdown d-inline-block">
-					<button type="button" class="btn header-item noti-icon waves-effect"
+					<button type="button" onclick="markNotificationsAsRead()" class="btn header-item noti-icon waves-effect"
 					        id="page-header-notifications-dropdown"
 					        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="mdi mdi-bell-outline"></i>
-						<span class="badge badge-danger badge-pill">3</span>
+
+						@if($notificationsCount>0)
+						<span class="badge badge-danger badge-pill" id="badge-display">{{ number_format($notificationsCount) }}</span>
+							@endif
 					</button>
 					<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
 					     aria-labelledby="page-header-notifications-dropdown">
@@ -57,12 +66,16 @@
 								<div class="col">
 									<h6 class="m-0 font-weight-medium text-uppercase"> Notifications </h6>
 								</div>
+								@if($notificationsCount>0)
 								<div class="col-auto">
-									<span class="badge badge-pill badge-danger">New 3</span>
+									<span class="badge badge-pill badge-danger" id="badge-display">New {{number_format($notificationsCount)}}</span>
 								</div>
+								@endif
 							</div>
 						</div>
 						<div data-simplebar style="max-height: 230px;">
+							@if($notificationsCount>0)
+								@foreach($notifications as $notification)
 							<a href="#" class="text-reset notification-item">
 								<div class="media">
 									<div class="avatar-xs mr-3">
@@ -71,63 +84,24 @@
                                                 </span>
 									</div>
 									<div class="media-body">
-										<h6 class="mt-0 mb-1">Your order is placed</h6>
+										<h6 class="mt-0 mb-1">{{$notification->title}}</h6>
 										<div class="font-size-12 text-muted">
-											<p class="mb-1">If several languages coalesce the grammar</p>
-											<p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
+											<p class="mb-1">{{ $notification->message }}</p>
+											<p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ \App\Http\Controllers\PageController::preciseTime($notification->created_at) }}</p>
 										</div>
 									</div>
 								</div>
 							</a>
-							<a href="#" class="text-reset notification-item">
-								<div class="media">
-									<img src="assets/images/users/avatar-3.jpg"
-									     class="mr-3 rounded-circle avatar-xs" alt="user-pic">
-									<div class="media-body">
-										<h6 class="mt-0 mb-1">Andrew Mackie</h6>
-										<div class="font-size-12 text-muted">
-											<p class="mb-1">It will seem like simplified English.</p>
-											<p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-										</div>
-									</div>
-								</div>
-							</a>
-							<a href="#" class="text-reset notification-item">
-								<div class="media">
-									<div class="avatar-xs mr-3">
-                                                <span class="avatar-title bg-success rounded-circle font-size-16">
-                                                    <i class="mdi mdi-package-variant-closed"></i>
-                                                </span>
-									</div>
-									<div class="media-body">
-										<h6 class="mt-0 mb-1">Your item is shipped</h6>
-										<div class="font-size-12 text-muted">
-											<p class="mb-1">One could refuse to pay expensive translators.</p>
-											<p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
-										</div>
-									</div>
-								</div>
-							</a>
-
-							<a href="#" class="text-reset notification-item">
-								<div class="media">
-									<img src="assets/images/users/avatar-4.jpg"
-									     class="mr-3 rounded-circle avatar-xs" alt="user-pic">
-									<div class="media-body">
-										<h6 class="mt-0 mb-1">Dominic Kellway</h6>
-										<div class="font-size-12 text-muted">
-											<p class="mb-1">As a skeptical Cambridge friend of mine occidental.</p>
-											<p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-										</div>
-									</div>
-								</div>
-							</a>
+								@endforeach
+							@endif
 						</div>
+						@if($notificationsCount>0)
 						<div class="p-2 border-top">
 							<a class="btn-link btn btn-block text-center" href="javascript:void(0)">
 								<i class="mdi mdi-arrow-down-circle mr-1"></i> Load More..
 							</a>
 						</div>
+							@endif
 					</div>
 				</div>
 
@@ -163,8 +137,21 @@
 
 					<li>
 						<a href="{{ route('sport.betting') }}" class="waves-effect">
-							<i class="mdi mdi-view-dashboard"></i><span
-									class="badge badge-pill badge-success float-right">3</span>
+							<i class="mdi mdi-bank"></i>
+							@if($bettingOdds->count() > 0)
+							<span class="badge badge-pill badge-success float-right">{{ number_format($bettingOdds->count()) }}</span>
+							@endif
+							<span>Invest</span>
+						</a>
+					</li>
+
+
+					<li>
+						<a href="{{ route('sport.betting') }}" class="waves-effect">
+							<i class="mdi mdi-view-dashboard"></i>
+							@if($bettingOdds->count() > 0)
+							<span class="badge badge-pill badge-success float-right">{{ number_format($bettingOdds->count()) }}</span>
+							@endif
 							<span>Sport Betting</span>
 						</a>
 					</li>
@@ -226,9 +213,10 @@
 				{{--<div class="col-sm-12">--}}
 					<div class="row">
 						<div class="col-sm-12">
-							<a href="{{route('home')}}" ><i class="mdi mdi-home mdi-36px margin-right-30 "></i> </a>
-							<a href="{{route('trading.signals')}}" ><i class="mdi mdi-chart-line mdi-36px margin-right-30"></i> </a>
-							<a href="{{route('sport.betting')}}" ><i class="mdi mdi-soccer mdi-36px text-black"></i> </a>
+							<a href="{{route('home')}}" ><i class="mdi mdi-home mdi-24px margin-right-20 "></i> </a>
+							<a href="{{route('trading.signals')}}" ><i class="mdi mdi-bank mdi-24px margin-right-20"></i> </a>
+							<a href="{{route('trading.signals')}}" ><i class="mdi mdi-chart-line mdi-24px margin-right-20"></i> </a>
+							<a href="{{route('sport.betting')}}" ><i class="mdi mdi-soccer mdi-24px text-black"></i> </a>
 						</div>
 					</div>
 				{{--</div>--}}
@@ -277,5 +265,23 @@
 <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
 <script src="{{ asset('assets/js/app.js') }}"></script>
+
+<script src="{{ asset('js/axios.js') }}"></script>
+<script>
+	function markNotificationsAsRead() {
+		let userID = "{{ $user->id }}";
+
+		axios.post('{{ route('notifications.read') }}', {
+			userID: userID,
+		}).then(function (response) {
+			console.log(response);
+			document.getElementById('badge-display').style.display="none";
+		}).catch(function (error) {
+				console.log(error);
+			});
+	}
+	</script>
+
+@include('sweetalert::alert')
 </body>
 </html>

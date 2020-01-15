@@ -44,12 +44,10 @@ class LoginController extends Controller {
 	 * @return \Illuminate\Http\RedirectResponse|string
 	 */
 	public function login(Request $request) {
-		$user = User::query()->where('pin', $request->pin)->first();
-		if (!$user) {
-			return redirect()->back()->with('error', 'Invalid pin!');
+		$credentials = \request(['phoneNumber', 'pin']);
+		if (!auth()->guard('admin')->attempt($credentials)) {
+			return redirect()->back()->with('error', 'Sorry that did\'t work, please try again.');
 		}
-
-		auth()->loginUsingId($user->id);
 		return redirect()->route('home');
 	}
 
@@ -67,16 +65,16 @@ class LoginController extends Controller {
 	 */
 	public function postAdminLogin(Request $request) {
 		$this->validate($request, [
-			'phoneNumber' => 'required',
+			'phone_number' => 'required',
 			'password' => 'required',
 		]);
 
-		$phoneNumber = $request->phoneNumber;
+		$phoneNumber = $request->phone_number;
 
-		$credentials = \request(['phoneNumber', 'password']);
+		$credentials = \request(['phone_number', 'password']);
 		if (!auth()->guard('admin')->attempt($credentials)) {
 			$log = [
-				'phoneNumber' => $phoneNumber,
+				'phone_number' => $phoneNumber,
 				'message' => "FAILED to login  at " . Carbon::now(),
 			];
 			PageController::log($log, 'error', 'admin-login-error');

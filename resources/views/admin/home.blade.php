@@ -52,7 +52,7 @@
 	                <h4 class="m-0 align-self-center"><span class="text-success">1,753</span>/2,000 </h4>
 	                <span>
 	                    <span class="mb-0 mt-3 text-muted"><span class="text-success">1.23 % <i class="mdi mdi-trending-up mr-1"></i></span> Gain</span>
-	                    <span class="float-right"><a href="" class="btn btn-success btn-sm">CREATE ODDS</a> </span>
+	                    <span class="float-right"><a href="{{ route('admin.sport.betting') }}" class="btn btn-success btn-sm">CREATE ODDS</a> </span>
                     </span>
                 </div>
             </div>

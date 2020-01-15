@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\BettingOdd;
+use App\BoughtBettingOdd;
 use App\Notif;
+use App\Statement;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use PhpParser\Node\Scalar\String_;
 
 class HomeController extends Controller
 {
@@ -36,7 +40,11 @@ class HomeController extends Controller
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
     public function sportBetting(){
-    	return view('user.investments.sport_betting');
+	    $odds = (new CacheController())->bettingOdds();
+    	return view('user.investments.sport_betting',[
+    		'odds'=>$odds,
+    		'user'=>auth()->user(),
+	    ]);
     }
 
 	/**
@@ -49,14 +57,21 @@ class HomeController extends Controller
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
     public function topUp(){
-	    return view('user.finance.top_up');
+	    return view('user.finance.top_up',[
+	    	'user'=>auth()->user()
+	    ]);
     }
 
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
     public function statements(){
-    	return view('user.finance.statements');
+    	$user = auth()->user();
+    	$statements = Statement::query()->where('user_id',$user->id)->orderByDesc('created_at')->take(50)->get();
+    	return view('user.finance.statements',[
+    		'user'=>$user,
+    		'statements'=>$statements,
+	    ]);
     }
 
 	/**
@@ -132,5 +147,83 @@ class HomeController extends Controller
     	auth()->logout();
     	Session::flush();
     	return redirect()->route('login');
+    }
+
+	/**
+	 * @param Request $request
+	 */
+    public function readNotifications(Request $request){
+    	Notif::query()->where('read',false)->where('user_id',$request->userID)->update([
+    		'read'=>true,
+	    ]);
+    }
+
+	/**
+	 * @param String $type
+	 * @param int $id
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+    public function purchase(String $type, int $id){
+    	$user = auth()->user();
+    	$balance = $this->getBalance($user->id);
+    	if ($type=='odd'){
+    		$transaction = BettingOdd::query()->find($id);
+    		return view('user.investments.purchase',[
+    			'type'=>$type,
+    			'transaction'=>$transaction,
+    			'user'=>$user,
+    			'balance'=>$balance,
+		    ]);
+	    }
+    }
+
+	/**
+	 * @param int $id
+	 * @return int
+	 */
+    public function getBalance(int $id){
+    	return Statement::query()->where('user_id',$id)->where('action',">" ,0)->sum('amount') - Statement::query()->where('user_id',$id)->where('action',"<" ,0)->sum('amount');
+    }
+
+	/**
+	 * @param int $user_id
+	 * @param int $action
+	 * @param int $amount
+	 * @param string $description
+	 */
+    public function createStatements(int $user_id, int $action, int $amount, string $description){
+    	Statement::query()->create([
+    		'user_id'=>$user_id,
+    		'action'=>$action,
+    		'amount'=>$amount,
+    		'description'=>$description,
+	    ]);
+    }
+
+	/**
+	 * @param $user_id
+	 * @param $odd_id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+    public function purchaseBettingOdds(int $user_id, int $odd_id){
+	    $odd= BettingOdd::query()->find($odd_id);
+	    $description = "Purchased Betting Odds #$odd->id for KES $odd->price";
+
+    	//create statement
+	    $this->createStatements($user_id,env('STATEMENT_BETTING_ODDS'),$odd->price,$description);
+
+	    //record sold odd
+	    BoughtBettingOdd::query()->create([
+	    	'betting_odd_id'=>$odd_id,
+	    	'user_id'=>$user_id,
+	    ]);
+
+	    //send notification
+	    PageController::sendNotification($user_id,"Bought Betting Odds",$description);
+
+	    //refresh the cache
+	    (new CacheController())->refreshBettingOdd();
+	    alert()->success('Bought Odds',$description);
+	    return redirect()->route('sport.betting')->with('success',$description);
     }
 }

@@ -1,4 +1,7 @@
 @extends('layouts.app')
+<?php
+$balance = (new \App\Http\Controllers\HomeController())->getBalance($user->id);
+?>
 @section('content')
     <div class="row">
         <div class="col-sm-12 col-xl-12">
@@ -9,7 +12,7 @@
                             <h5 class="font-size-14">Hey <span class="text-success">{{$user->name}}.</span></h5>
                         </div>
                     </div>
-                    <h4 class="m-0 align-self-center"><span class="text-success">KES 2,500</span>  <span class="float-right"><a href="{{ route('top.up') }}" class="btn btn-success btn-sm">TOP UP</a> </span></h4>
+                    <h4 class="m-0 align-self-center"><span class="text-success">KES {{number_format($balance)}}</span>  <span class="float-right"><a href="{{ route('top.up') }}" class="btn btn-success btn-sm">TOP UP</a> </span></h4>
                 </div>
             </div>
         </div>

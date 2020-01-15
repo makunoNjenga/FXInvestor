@@ -26,14 +26,23 @@
                                     </span>
                         @endif
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-success text-center">
-                                A login PIN will be sent to your phone number after successful registration.
-                            </div>
-                        </div>
+                    <div class="form-group mb-4">
+                        <label for="userpassword">Pin</label>
+                        <input type="password" class="form-control border-radius-20 {{ $errors->has('pin') ? ' has-error' : '' }}" id="userpassword" placeholder="Enter pin" name="pin" value="{{ old('pin') }}">
+                        @if ($errors->has('pin'))
+                            <span class="help-block text-danger">
+                                        <strong>{{ $errors->first('pin') }}</strong>
+                                    </span>
+                        @endif
                     </div>
+
+                    {{--<div class="row">--}}
+                        {{--<div class="col-md-12">--}}
+                            {{--<div class="alert alert-success text-center">--}}
+                                {{--A login PIN will be sent to your phone number after successful registration.--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <div class="mt-4">
                         <button class="btn btn-success btn-block waves-effect waves-light" type="submit">Join Us</button>
                     </div>

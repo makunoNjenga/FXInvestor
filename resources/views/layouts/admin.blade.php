@@ -1,3 +1,6 @@
+<?php
+$bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -155,9 +158,11 @@
 					</li>
 					<li class="menu-title">Investments Data</li>
 					<li>
-						<a href="{{ route('sport.betting') }}" class="waves-effect">
-							<i class="mdi mdi-view-dashboard"></i><span
-									class="badge badge-pill badge-success float-right">3</span>
+						<a href="{{ route('admin.sport.betting') }}" class="waves-effect">
+							<i class="mdi mdi-view-dashboard"></i>
+							@if($bettingOdds->count() > 0)
+							<span class="badge badge-pill badge-success float-right">{{ number_format($bettingOdds->count()) }}</span>
+							@endif
 							<span>Sport Betting</span>
 						</a>
 					</li>

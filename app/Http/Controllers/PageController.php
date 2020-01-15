@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\BettingOdd;
+use App\BulkNotification;
+use App\Notif;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
-class PageController extends Controller
-{
-
+class PageController extends Controller {
+	public function __construct() {
+		$this->cacheTime = 60;
+	}
 	/**
 	 * Write the system log files
 	 * @param array $data
@@ -47,21 +53,12 @@ class PageController extends Controller
 	 */
 	public static function sendNotification(int $receiver, string $subject, string $message, int $sender = 0) {
 
-		if ($subject != "Wallet to Wallet transfer verification code") {
-			Notif::query()->create([
-				'user_id' => $receiver,
-				'sender_id' => $sender,
-				'subject' => $subject,
-				'message' => $message,
-			]);
-		}
-
-		//send email
-		$email = User::query()->find($receiver);
-
-		if ($email) {
-			self::queueEmail($email->email, $subject, "Hello " . $email->name . ",<br><br>$message");
-		}
+		Notif::query()->create([
+			'user_id' => $receiver,
+			'sender_id' => $sender,
+			'subject' => $subject,
+			'message' => $message,
+		]);
 	}
 
 	/**
@@ -79,8 +76,31 @@ class PageController extends Controller
 		return Carbon::parse($date)->diffForHumans();
 	}
 
-	public function bulkNotificationsToAllUsers(){
-
+	public function bulkNotificationsToAllUsers(string $subject, string $message, int $receiver) {
+		BulkNotification::query()->create([
+			'subject' => $subject,
+			'message' => $message,
+			'receiver' => $receiver,
+		]);
 	}
+
+	public static function processBulkNotifications() {
+		$notification = BulkNotification::query()->where('sent', false)->first();
+		if ($notification && $notification->receiver == 0) {
+			foreach (User::all('id') as $user) {
+				self::sendNotification($user->id, $notification->subject, $notification->message);
+			}
+			$notification->sent = true;
+			$notification->update();
+		}
+	}
+
+	/**
+	 * @return int|mixed
+	 */
+	public static function deleteOlderNotifications(){
+		return DB::table('notifs')->where('created_at', '<', NOW()->subDays(2))->delete();
+	}
+
 
 }

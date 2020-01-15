@@ -6,7 +6,7 @@
 		    We have made top up so easy. Just add the amount and click deposit. A pop up message will be sent to your. Input the pin to complete transaction.
 		    <br>
 		    <br>
-		    <label>Your current balance is <span class="text-success">KES 10,000</span> </label>
+		    <label>Your current balance is <span class="text-success">KES {{ number_format((new \App\Http\Controllers\HomeController())->getBalance($user->id)) }}</span> </label>
 	    </span>
 
         <div class="col-sm-12 col-xl-12">

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class AdminsTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,14 +15,14 @@ class AdminsTableSeeder extends Seeder
 		    [
 			    'name' => 'Simon Njenga',
 			    'phone_number' => '0706256130',
-			    'email' => 'makuno.biz@gmail.com',
-			    'password' => \Illuminate\Support\Facades\Hash::make('0706256130'),
+			    'pin' => \Illuminate\Support\Facades\Hash::make('2020'),
 			    'created_at' => \Illuminate\Support\Carbon::now(),
 			    'updated_at' => \Illuminate\Support\Carbon::now(),
 		    ],
 	    ];
 
-	    \Illuminate\Support\Facades\DB::table('admins')->insert($users);
+	    \Illuminate\Support\Facades\DB::table('users')->insert($users);
 
+	    (new \App\Http\Controllers\HomeController())->createStatements(1,1,10000,"Test funds");
     }
 }

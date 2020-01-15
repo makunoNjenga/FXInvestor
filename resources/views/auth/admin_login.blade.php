@@ -12,7 +12,7 @@
 				<div class="col-md-12">
 					<div class="form-group mb-4">
 						<label for="userpassword">Phonenumber</label>
-						<input type="number" name="phoneNumber" class="form-control border-radius-20" id="phonenumber"
+						<input type="number" name="phone_number" class="form-control border-radius-20" id="phonenumber"
 						       placeholder="Enter phonenumber">
 					</div>
 

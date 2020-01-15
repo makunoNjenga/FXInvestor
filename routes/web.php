@@ -35,6 +35,10 @@ Route::post('/profile', 'HomeController@postProfile')->name('profile');
 
 Route::get('/contact/support', 'HomeController@contactAdmin')->name('contact.support');
 Route::post('/contact/support', 'HomeController@postContactAdmin')->name('contact.support');
+Route::post('/mark/notification/read', 'HomeController@readNotifications')->name('notifications.read');
+
+Route::get('/purchase/{type}/{id}', 'HomeController@purchase')->name('purchase');
+Route::get('/purchase/betting/{user_id}/{odd_id}', 'HomeController@purchaseBettingOdds')->name('purchase.betting.odds');
 
 Route::group([
 	'prefix' => 'admin',
