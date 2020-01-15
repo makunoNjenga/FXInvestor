@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BettingOdd;
+use App\TradingSignal;
 use Illuminate\Filesystem\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -61,6 +62,40 @@ class AdminController extends Controller
 		(new CacheController())->put('betting-odds-new');
 
 		alert()->success('success','Odd posted successfully');
+		return redirect()->back();
+	}
+
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function getTradingSignal(){
+		$tradingSignals = (new CacheController())->tradingSignals();
+		return view('admin.investments.trading_signals',[
+			'tradingSignals'=>$tradingSignals
+		]);
+	}
+
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function postTradingSignal(Request $request){
+		TradingSignal::query()->create([
+			'pair'=>$request->pair,
+			'signal'=>$request->signal,
+			'entry'=>$request->entry,
+			'take_profit'=>$request->take_profit,
+			'stop_loss'=>$request->stop_loss,
+			'price'=>$request->price,
+		]);
+
+		//send bulk notification
+		(new PageController())->bulkNotificationsToAllUsers('Trading Signal', "Trading signal on $request->pair has been released.",0);
+
+		//cache the odds again
+		(new CacheController())->put('trading-signals-new');
+
+		alert()->success('success','Trading signal posted successfully');
 		return redirect()->back();
 	}
 }

@@ -39,6 +39,7 @@ Route::post('/mark/notification/read', 'HomeController@readNotifications')->name
 
 Route::get('/purchase/{type}/{id}', 'HomeController@purchase')->name('purchase');
 Route::get('/purchase/betting/{user_id}/{odd_id}', 'HomeController@purchaseBettingOdds')->name('purchase.betting.odds');
+Route::get('/purchase/trading/signals/{user_id}/{signal_id}', 'HomeController@purchaseTradingSignals')->name('purchase.trading.signals');
 
 Route::group([
 	'prefix' => 'admin',
@@ -50,4 +51,7 @@ Route::group([
 
 	Route::get('/sport/betting', 'AdminController@sportBetting')->name('admin.sport.betting');
 	Route::post('/sport/betting', 'AdminController@postSportBetting')->name('admin.sport.betting');
+
+	Route::get('/trading/signal', 'AdminController@getTradingSignal')->name('admin.trading.signal');
+	Route::post('/trading/signal', 'AdminController@postTradingSignal')->name('admin.trading.signal');
 });

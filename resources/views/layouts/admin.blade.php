@@ -1,5 +1,6 @@
 <?php
 $bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
+$tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals();
 ?>
 <!doctype html>
 <html lang="en">
@@ -168,16 +169,18 @@ $bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
 					</li>
 
 					<li>
-						<a href="{{ route('trading.signals') }}" class="waves-effect">
-							<i class="mdi mdi-poll"></i><span
-									class="badge badge-pill badge-success float-right">3</span>
+						<a href="{{ route('admin.trading.signal') }}" class="waves-effect">
+							<i class="mdi mdi-poll"></i>
+							@if($tradingSignals->count() > 0)
+							<span class="badge badge-pill badge-success float-right">{{ number_format($tradingSignals->count()) }}</span>
+							@endif
 							<span>Trading Signals</span>
 						</a>
 					</li>
 
 					<li class="menu-title">Info Panel</li>
 					<li>
-						<a href="{{ route('contact.support') }}" class="waves-effect">
+						<a href="" class="waves-effect">
 							<i class="mdi mdi-bullhorn"></i>
 							<span>Contacts </span>
 						</a>
@@ -210,8 +213,8 @@ $bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
 				{{--<div class="col-sm-12">--}}
 					<div class="row">
 						<div class="col-sm-12">
-							<a href="{{route('home')}}" ><i class="mdi mdi-home mdi-36px margin-right-30 "></i> </a>
-							<a href="{{route('trading.signals')}}" ><i class="mdi mdi-chart-line mdi-36px margin-right-30"></i> </a>
+							<a href="{{route('admin.home')}}" ><i class="mdi mdi-home mdi-36px margin-right-30 "></i> </a>
+							<a href="{{route('admin.trading.signal')}}" ><i class="mdi mdi-chart-line mdi-36px margin-right-30"></i> </a>
 							<a href="{{route('admin.sport.betting')}}" ><i class="mdi mdi-soccer mdi-36px text-black"></i> </a>
 						</div>
 					</div>

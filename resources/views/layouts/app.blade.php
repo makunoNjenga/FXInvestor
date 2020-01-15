@@ -3,6 +3,7 @@ $user = auth()->user();
 $notifications = \App\Notif::query()->where('user_id',$user->id)->orderByDesc('created_at')->get();
 $notificationsCount = $notifications->where('read',false)->count();
 $bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
+$tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals();
 ?>
 <!doctype html>
 <html lang="en">
@@ -74,7 +75,7 @@ $bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
 							</div>
 						</div>
 						<div data-simplebar style="max-height: 230px;">
-							@if($notificationsCount>0)
+							{{--@if($notificationsCount>0)--}}
 								@foreach($notifications as $notification)
 							<a href="#" class="text-reset notification-item">
 								<div class="media">
@@ -93,7 +94,7 @@ $bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
 								</div>
 							</a>
 								@endforeach
-							@endif
+							{{--@endif--}}
 						</div>
 						@if($notificationsCount>0)
 						<div class="p-2 border-top">
@@ -158,8 +159,10 @@ $bettingOdds = (new \App\Http\Controllers\CacheController())->bettingOdds();
 
 					<li>
 						<a href="{{ route('trading.signals') }}" class="waves-effect">
-							<i class="mdi mdi-poll"></i><span
-									class="badge badge-pill badge-success float-right">3</span>
+							<i class="mdi mdi-poll"></i>
+							@if($tradingSignals->count() > 0)
+							<span class="badge badge-pill badge-success float-right">{{ number_format($tradingSignals->count()) }}</span>
+							@endif
 							<span>Trading Signals</span>
 						</a>
 					</li>

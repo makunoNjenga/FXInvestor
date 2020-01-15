@@ -21,10 +21,10 @@
 							</div>
 							<h4 class="m-0 align-self-center">Pick: <span
 										class="text-primary">@if($odd->price == 0 || $odd->BoughtBettingOdd()->where('user_id',$user->id)->first()){{ $odd->pick }}@else
-										<strike><span class="text-warning">Premium</span></strike> @endif</span></h4>
+										<span class="text-danger"><i class="mdi mdi-lock mdi-18px"></i> </span> @endif</span></h4>
 							<span>
-	                    <span class="mb-0 mt-3 text-muted">KICK-OFF: <span
-				                    class="text-warning">
+	                    <span class="mb-0 mt-3 text-muted">KICK-OFF:
+		                    <span class="text-warning">
 			                    {{--@if($odd->price == 0 || $odd->BoughtBettingOdd()->where('user_id',$user->id)->first()) --}}
 			                    {{ $odd->kick_off }}
 			                    {{--@else <i class="text-danger mdi mdi-lock"></i> @endif--}}
@@ -50,8 +50,8 @@
 										class=""><strong>#{{$odd->id}}</strong></span></span>
 							@if($odd->price > 0)
 								<br>
-								<span class="mb-0 mt-3 text-muted">Cost: <span
-											class=""><strong>KES {{number_format($odd->price)}}</strong></span></span>
+								<span class="mb-0 mt-3">Cost: <span
+											class="text-success"><strong>KES {{number_format($odd->price)}}</strong></span></span>
 							@endif
 						</div>
 					</div>

@@ -20,6 +20,9 @@ class CreateTradingSignalsTable extends Migration
             $table->string('entry');
             $table->string('stop_loss')->nullable();
             $table->string('take_profit')->nullable();
+            $table->string('price')->default(0);
+            $table->boolean('won')->nullable();
+            $table->string('outcome')->nullable();
             $table->timestamps();
         });
     }

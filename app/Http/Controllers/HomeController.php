@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\BettingOdd;
 use App\BoughtBettingOdd;
+use App\BoughtTradingSignal;
 use App\Notif;
 use App\Statement;
+use App\TradingSignal;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -51,7 +53,11 @@ class HomeController extends Controller
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
     public function tradingSignals(){
-	    return view('user.investments.trading_signals');
+	    $tradingSignals = (new CacheController())->tradingSignals();
+	    return view('user.investments.trading_signals',[
+	    	'tradingSignals'=>$tradingSignals,
+		    'user'=>auth()->user()
+	    ]);
     }
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -175,6 +181,15 @@ class HomeController extends Controller
     			'balance'=>$balance,
 		    ]);
 	    }
+    	if ($type=='signal'){
+    		$transaction = TradingSignal::query()->find($id);
+    		return view('user.investments.purchase',[
+    			'type'=>$type,
+    			'transaction'=>$transaction,
+    			'user'=>$user,
+    			'balance'=>$balance,
+		    ]);
+	    }
     }
 
 	/**
@@ -225,5 +240,32 @@ class HomeController extends Controller
 	    (new CacheController())->refreshBettingOdd();
 	    alert()->success('Bought Odds',$description);
 	    return redirect()->route('sport.betting')->with('success',$description);
+    }
+
+	/**
+	 * @param int $user_id
+	 * @param int $signal_id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+    public function purchaseTradingSignals(int $user_id, int $signal_id){
+	    $signal= TradingSignal::query()->find($signal_id);
+	    $description = "Purchased Trading  Signals #$signal->id for KES $signal->price";
+
+    	//create statement
+	    $this->createStatements($user_id,env('STATEMENT_TRADING_SIGNAL'),$signal->price,$description);
+
+	    //record sold odd
+	    BoughtTradingSignal::query()->create([
+	    	'trading_signal_id'=>$signal_id,
+	    	'user_id'=>$user_id,
+	    ]);
+
+	    //send notification
+	    PageController::sendNotification($user_id,"Bought Trading Signals",$description);
+
+	    //refresh the cache
+	    (new CacheController())->refreshTradingSignals();
+	    alert()->success('Bought Signal',$description);
+	    return redirect()->route('trading.signals')->with('success',$description);
     }
 }
