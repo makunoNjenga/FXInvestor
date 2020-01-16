@@ -54,4 +54,9 @@ Route::group([
 
 	Route::get('/trading/signal', 'AdminController@getTradingSignal')->name('admin.trading.signal');
 	Route::post('/trading/signal', 'AdminController@postTradingSignal')->name('admin.trading.signal');
+
+	Route::get('/manage/trading/signal', 'AdminController@getManageTradingSignal')->name('admin.manage.trading.signal');
+	Route::get('/manage/trading/signal/delete/{id}', 'AdminController@deleteTradingSignal')->name('admin.manage.delete.trading.signal');
+	Route::get('/manage/trading/signal/outcome/{id}', 'AdminController@outcomeTradingSignal')->name('admin.manage.outcome.trading.signal');
+	Route::post('/manage/trading/signal/outcome', 'AdminController@postOutcomeTradingSignal')->name('admin.manage.post.outcome.trading.signal');
 });

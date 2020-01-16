@@ -5,7 +5,7 @@
 		    <label>Today's Signals</label><br>
 		    Unlock your full potential by purchasing premium signals
 	    </span>
-
+@if($tradingSignals->count() > 0)
 		@foreach($tradingSignals as $tradingSignal)
 			<div class="col-sm-12 col-xl-12">
 				<div class="card">
@@ -53,6 +53,11 @@
 				</div>
 			</div>
 		@endforeach
+		@else
+			<span class="alert alert-danger text-center col-sm-12">
+		    No update! Come back later
+	    </span>
+		@endif
 		<script type="text/javascript">
 			function loading() {
 				document.getElementById('load').removeAttribute('hidden');

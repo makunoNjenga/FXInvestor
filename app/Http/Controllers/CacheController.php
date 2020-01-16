@@ -25,12 +25,12 @@ class CacheController extends Controller
 	public function put(string $key){
 		//new netting odds
 		if ($key =="betting-odds-new"){
-			$data = BettingOdd::query()->where('outcome',null)->orderByDesc('created_at')->get();
+			$data = BettingOdd::query()->whereNotNull('outcome')->orderByDesc('created_at')->get();
 			Cache::put($key,$data,$this->time);
 		}
 
 		if ($key == "trading-signals-new"){
-			$data = TradingSignal::query()->where('outcome',null)->orderByDesc('created_at')->get();
+			$data = TradingSignal::query()->whereNotNull('outcome')->orderByDesc('created_at')->get();
 			Cache::put($key,$data,$this->time);
 		}
 
