@@ -20,6 +20,7 @@
 </head>
 
 <body class="bg-primary bg-pattern">
+<div class="loader"></div>
 <div class="account-pages">
 	<div class="container">
 		<div class="row">
@@ -44,7 +45,15 @@
 		<!-- end row -->
 	</div>
 </div>
+<script>
+	window.onload = function(){
+		$(".loader").fadeOut("slow");
+	};
 
+	$(window).load(function() {
+		$(".loader").fadeOut("slow");
+	});
+</script>
 <!-- JAVASCRIPT -->
 <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
