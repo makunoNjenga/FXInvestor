@@ -1,5 +1,14 @@
 @extends('layouts.admin')
 @section('content')
+	@if($odds->count() > 0)
+		<div class="row">
+			<div class="col-sm-12 col-xl-12">
+				<a href="{{ route('admin.manage.sport.betting') }}" class="btn-sm btn btn-primary float-right"><i
+							class="mdi mdi-cogs"></i> Manage</a>
+			</div>
+		</div>
+		<br>
+	@endif
 	<div class="row">
 	    <span class="alert alert-info text-center col-sm-12">
 		    <label>Today's Pick</label><br>

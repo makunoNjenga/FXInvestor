@@ -52,7 +52,6 @@ class PageController extends Controller {
 	 * @param int $sender
 	 */
 	public static function sendNotification(int $receiver, string $subject, string $message, int $sender = 0) {
-
 		Notif::query()->create([
 			'user_id' => $receiver,
 			'sender_id' => $sender,
@@ -76,6 +75,11 @@ class PageController extends Controller {
 		return Carbon::parse($date)->diffForHumans();
 	}
 
+	/**
+	 * @param string $subject
+	 * @param string $message
+	 * @param int $receiver
+	 */
 	public function bulkNotificationsToAllUsers(string $subject, string $message, int $receiver) {
 		BulkNotification::query()->create([
 			'subject' => $subject,
@@ -101,6 +105,5 @@ class PageController extends Controller {
 	public static function deleteOlderNotifications(){
 		return DB::table('notifs')->where('created_at', '<', NOW()->subDays(2))->delete();
 	}
-
 
 }

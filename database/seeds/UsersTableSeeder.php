@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
 		    [
 			    'name' => 'Simon Njenga',
 			    'phone_number' => '0706256130',
-			    'pin' => \Illuminate\Support\Facades\Hash::make('2020'),
+			    'password' => \Illuminate\Support\Facades\Hash::make('2020'),
 			    'created_at' => \Illuminate\Support\Carbon::now(),
 			    'updated_at' => \Illuminate\Support\Carbon::now(),
 		    ],
@@ -24,5 +24,7 @@ class UsersTableSeeder extends Seeder
 	    \Illuminate\Support\Facades\DB::table('users')->insert($users);
 
 	    (new \App\Http\Controllers\HomeController())->createStatements(1,1,10000,"Test funds");
+	    (new \App\Http\Controllers\HomeController())->createStatements(2,1,10000,"Test funds");
+	    (new \App\Http\Controllers\HomeController())->createStatements(3,1,10000,"Test funds");
     }
 }

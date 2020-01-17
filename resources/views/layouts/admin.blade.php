@@ -152,7 +152,7 @@ $tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals(
 				<ul class="metismenu list-unstyled" id="side-menu">
 					<li class="menu-title">Finance</li>
 					<li>
-						<a href="{{ route('statements') }}" class="waves-effect">
+						<a href="{{ route('admin.statements') }}" class="waves-effect">
 							<i class="mdi mdi-server"></i>
 							<span>Statements</span>
 						</a>

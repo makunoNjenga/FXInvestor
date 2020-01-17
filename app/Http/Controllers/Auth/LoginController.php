@@ -44,8 +44,8 @@ class LoginController extends Controller {
 	 * @return \Illuminate\Http\RedirectResponse|string
 	 */
 	public function login(Request $request) {
-		$credentials = \request(['phoneNumber', 'pin']);
-		if (!auth()->guard('admin')->attempt($credentials)) {
+		$credentials = \request(['phone_number', 'password']);
+		if (!auth()->attempt($credentials)) {
 			return redirect()->back()->with('error', 'Sorry that did\'t work, please try again.');
 		}
 		return redirect()->route('home');

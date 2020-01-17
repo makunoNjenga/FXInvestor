@@ -21,7 +21,7 @@
                     </div>
                     <div class="form-group mb-4">
                         <label for="userpassword">Pin</label>
-                        <input type="password" name="pin" class="form-control border-radius-20" id="userpassword" placeholder="Enter pin">
+                        <input type="password" name="password" class="form-control border-radius-20" id="userpassword" placeholder="Enter pin">
                     </div>
 
                     <div class="row">

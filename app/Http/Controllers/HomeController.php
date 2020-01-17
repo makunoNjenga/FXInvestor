@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AdminStatement;
 use App\BettingOdd;
 use App\BoughtBettingOdd;
 use App\BoughtTradingSignal;
@@ -33,8 +34,12 @@ class HomeController extends Controller
     public function index()
     {
     	$user = auth()->user();
+	    $odds = (new CacheController())->boughtOdds();
+	    $signals = (new CacheController())->boughtSignals();
         return view('home',[
-        	'user'=>$user
+        	'user'=>$user,
+	        'odds'=>$odds,
+	        'signals'=>$signals,
         ]);
     }
 
@@ -174,6 +179,7 @@ class HomeController extends Controller
     	$balance = $this->getBalance($user->id);
     	if ($type=='odd'){
     		$transaction = BettingOdd::query()->find($id);
+		    (new CacheController())->refreshBoughtOdds();
     		return view('user.investments.purchase',[
     			'type'=>$type,
     			'transaction'=>$transaction,
@@ -183,6 +189,7 @@ class HomeController extends Controller
 	    }
     	if ($type=='signal'){
     		$transaction = TradingSignal::query()->find($id);
+		    (new CacheController())->refreshBoughtSignals();
     		return view('user.investments.purchase',[
     			'type'=>$type,
     			'transaction'=>$transaction,
@@ -236,6 +243,9 @@ class HomeController extends Controller
 	    //send notification
 	    PageController::sendNotification($user_id,"Bought Betting Odds",$description);
 
+	    //fund admin
+	    (new AdminController())->createStatement(env('ADMIN_STATEMENT_ODDS'),$odd->price,$description);
+
 	    //refresh the cache
 	    (new CacheController())->refreshBettingOdd();
 	    alert()->success('Bought Odds',$description);
@@ -262,6 +272,9 @@ class HomeController extends Controller
 
 	    //send notification
 	    PageController::sendNotification($user_id,"Bought Trading Signals",$description);
+
+	    //contact admin
+	    (new AdminController())->createStatement(env('ADMIN_STATEMENT_ODDS'),$signal->price,$description);
 
 	    //refresh the cache
 	    (new CacheController())->refreshTradingSignals();

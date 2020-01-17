@@ -59,4 +59,11 @@ Route::group([
 	Route::get('/manage/trading/signal/delete/{id}', 'AdminController@deleteTradingSignal')->name('admin.manage.delete.trading.signal');
 	Route::get('/manage/trading/signal/outcome/{id}', 'AdminController@outcomeTradingSignal')->name('admin.manage.outcome.trading.signal');
 	Route::post('/manage/trading/signal/outcome', 'AdminController@postOutcomeTradingSignal')->name('admin.manage.post.outcome.trading.signal');
+
+	Route::get('/manage/sports/betting', 'AdminController@getManageBettingTips')->name('admin.manage.sport.betting');
+	Route::get('/manage/sports/betting/delete/{id}', 'AdminController@deleteSportBetting')->name('admin.manage.delete.sports.betting');
+	Route::get('/manage/betting/odd/outcome/{id}', 'AdminController@outcomeBettingOdd')->name('admin.manage.outcome.betting.odds');
+	Route::post('/manage/trading/betting/odd', 'AdminController@postOutcomeBettingOdd')->name('admin.manage.post.outcome.betting.odd');
+
+	Route::get('/statements', 'AdminController@statements')->name('admin.statements');
 });

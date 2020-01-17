@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('phone_number')->unique();
             $table->boolean('active')->default(false);
             $table->boolean('blocked')->default(false);
-	        $table->string('pin');
+	        $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
