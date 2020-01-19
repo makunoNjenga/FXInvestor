@@ -313,7 +313,7 @@ class HomeController extends Controller
 
 	    //create entries
 	    $maturity = Carbon::now()->addWeekdays($this->getDays($request->amount));
-	    $description = "You have invested KES ".number_format($request->amount).". You expect 50% ROI of KES ".number_format($request->amount*0.5). " before ".date("M d Y",strtotime($maturity->addDays(1)));
+	    $description = "You have invested KES ".number_format($request->amount).". You expect 50% ROI of KES ".number_format($request->amount*0.5). " and a total of KES ".number_format($request->amount*0.5)." before ".date("M d Y",strtotime($maturity->addDays(1)));
     	Invest::query()->create([
     		'user_id'=>$user->id,
 		    'amount' => $request->amount,
