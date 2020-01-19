@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BettingOdd;
 use App\BulkNotification;
+use App\Invest;
 use App\Notif;
 use App\User;
 use Carbon\Carbon;
@@ -104,6 +105,29 @@ class PageController extends Controller {
 	 */
 	public static function deleteOlderNotifications(){
 		return DB::table('notifs')->where('created_at', '<', NOW()->subDays(2))->delete();
+	}
+
+	/**
+	 *
+	 */
+	public function maturedInvestments(){
+		$investments = Invest::query()->where('matured',false)->where('matures_at','<=', Carbon::now())->get();
+
+		foreach ($investments as $investment){
+			$investment->matured = true;
+			$investment->update();
+
+			//create two statements
+			$investmentMessage = "Investment #$investment->id has matured and deposited to your balance.";
+			$interestMessage = "#$investment->id investment interest.";
+
+			(new HomeController())->createStatements($investment->user_id,env('STATEMENT_INVESTMENT_RETURNS'),$investment->amount,$investmentMessage);
+			(new HomeController())->createStatements($investment->user_id,env('STATEMENT_INVESTMENT_INTEREST'),$investment->interest,$interestMessage);
+
+			//send notification
+			HomeController::sendNotification($investment->user_id,"Investment Matured",$interestMessage);
+			HomeController::sendNotification($investment->user_id,"Interest Matured",$interestMessage);
+		}
 	}
 
 }

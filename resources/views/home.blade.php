@@ -30,6 +30,28 @@ $wonOdds = $odds->where('won', true)->count() + ($allOdds+$odds->count());
 				<div class="card-body">
 					<div class="media">
 						<div class="media-body">
+							<h5 class="font-size-14">Investment</h5>
+						</div>
+						<div class="avatar-xs">
+                                                <span class="avatar-title rounded-circle bg-primary">
+                                                    <i class="dripicons-rocket"></i>
+                                                </span>
+						</div>
+					</div>
+					<span>
+	                    <span class="mb-0 mt-3 text-muted">Earn up-to <span class="text-success">50% <i
+					                    class="mdi mdi-trending-up mr-1"></i></span> interest <br>for as little as 3 days</span>
+	                    <span class="float-right"><a href="{{ route('invest') }}" class="btn btn-success btn-sm">Invest Now!</a> </span>
+                    </span>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-12 col-xl-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="media">
+						<div class="media-body">
 							<h5 class="font-size-14">Trading Signals</h5>
 						</div>
 						<div class="avatar-xs">
@@ -65,27 +87,6 @@ $wonOdds = $odds->where('won', true)->count() + ($allOdds+$odds->count());
 					<span>
 	                   <span class="mb-0 mt-3 text-muted"><span class="text-success">@if($wonOdds>0){{$wonOdds/$allOdds*100}} @else 0.0 @endif %<i class="mdi mdi-trending-up mr-1"></i></span> Gain</span>
 	                    <span class="float-right"><a href="{{ route('sport.betting') }}" class="btn btn-success btn-sm">Get ODDS</a> </span>
-                    </span>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-12 col-xl-12">
-			<div class="card">
-				<div class="card-body">
-					<div class="media">
-						<div class="media-body">
-							<h5 class="font-size-14">Investment</h5>
-						</div>
-						<div class="avatar-xs">
-                                                <span class="avatar-title rounded-circle bg-primary">
-                                                    <i class="dripicons-rocket"></i>
-                                                </span>
-						</div>
-					</div>
-					<span>
-	                    <span class="mb-0 mt-3 text-muted">Earn up-to <span class="text-success">50% <i
-					                    class="mdi mdi-trending-up mr-1"></i></span> interest <br>for as little as 3 days</span>
-	                    <span class="float-right"><a href="{{ route('sport.betting') }}" class="btn btn-success btn-sm">Invest Now!</a> </span>
                     </span>
 				</div>
 			</div>

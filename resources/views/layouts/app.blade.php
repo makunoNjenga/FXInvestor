@@ -81,7 +81,7 @@ $tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals(
 								<div class="media">
 									<div class="avatar-xs mr-3">
                                                 <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                                    <i class="mdi mdi-cart"></i>
+                                                    <i class="mdi mdi-bell-alert"></i>
                                                 </span>
 									</div>
 									<div class="media-body">
@@ -127,6 +127,12 @@ $tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals(
 							<span>Top Up</span>
 						</a>
 					</li>
+					<li>
+						<a href="{{ route('withdraw') }}" class="waves-effect">
+							<i class="mdi mdi-download"></i>
+							<span>Withdraw</span>
+						</a>
+					</li>
 
 					<li>
 						<a href="{{ route('statements') }}" class="waves-effect">
@@ -137,7 +143,7 @@ $tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals(
 					<li class="menu-title">Investments</li>
 
 					<li>
-						<a href="{{ route('sport.betting') }}" class="waves-effect">
+						<a href="{{ route('invest') }}" class="waves-effect">
 							<i class="mdi mdi-bank"></i>
 							@if($bettingOdds->count() > 0)
 							<span class="badge badge-pill badge-success float-right">{{ number_format($bettingOdds->count()) }}</span>
@@ -217,7 +223,7 @@ $tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals(
 					<div class="row">
 						<div class="col-sm-12">
 							<a href="{{route('home')}}" ><i class="mdi mdi-home mdi-24px margin-right-20 "></i> </a>
-							<a href="{{route('trading.signals')}}" ><i class="mdi mdi-bank mdi-24px margin-right-20"></i> </a>
+							<a href="{{route('invest')}}" ><i class="mdi mdi-bank mdi-24px margin-right-20"></i> </a>
 							<a href="{{route('trading.signals')}}" ><i class="mdi mdi-chart-line mdi-24px margin-right-20"></i> </a>
 							<a href="{{route('sport.betting')}}" ><i class="mdi mdi-soccer mdi-24px text-black"></i> </a>
 						</div>
@@ -286,5 +292,6 @@ $tradingSignals = (new \App\Http\Controllers\CacheController())->tradingSignals(
 	</script>
 
 @include('sweetalert::alert')
+@yield('scripts')
 </body>
 </html>

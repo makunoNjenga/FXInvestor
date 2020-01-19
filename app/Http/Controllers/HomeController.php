@@ -6,10 +6,12 @@ use App\AdminStatement;
 use App\BettingOdd;
 use App\BoughtBettingOdd;
 use App\BoughtTradingSignal;
+use App\Invest;
 use App\Notif;
 use App\Statement;
 use App\TradingSignal;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Scalar\String_;
@@ -131,7 +133,7 @@ class HomeController extends Controller
 	 * @param string $message
 	 * @param int $receiver
 	 */
-	public static function sendNotification(int $receiver, string $subject, string $message, int $sender) {
+	public static function sendNotification(int $receiver, string $subject, string $message, int $sender=0) {
 		Notif::query()->create([
 			'user_id' => $receiver,
 			'sender_id' => $sender,
@@ -280,5 +282,115 @@ class HomeController extends Controller
 	    (new CacheController())->refreshTradingSignals();
 	    alert()->success('Bought Signal',$description);
 	    return redirect()->route('trading.signals')->with('success',$description);
+    }
+
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+    public function invest(){
+    	return view('user.investments.invest',[
+		    'user'=>auth()->user()->load('investments')
+	    ]);
+    }
+
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+    public function postInvest(Request $request){
+	    $user = auth()->user();
+    	if ($request->amount < 1000){
+    		alert()->error('Error','Kindly choose the amount to invest.');
+    		return redirect()->back()->with('error',"Kindly choose the amount to invest.");
+	    }
+	    //check balance
+	    $balance = $this->getBalance($user->id);
+
+    	if ($balance < $request->amount){
+		    alert()->error('error',"Your balance is insufficient. Kindly top up here.");
+		    return redirect()->back()->with('error',"Your balance is insufficient. Kindly  <a href='".route('top.up')."'>top up here</a>.");
+	    }
+
+	    //create entries
+	    $maturity = Carbon::now()->addWeekdays($this->getDays($request->amount));
+	    $description = "You have invested KES ".number_format($request->amount).". You expect 50% ROI of KES ".number_format($request->amount*0.5). " before ".date("M d Y",strtotime($maturity->addDays(1)));
+    	Invest::query()->create([
+    		'user_id'=>$user->id,
+		    'amount' => $request->amount,
+		    'interest'=>0.5 *$request->amount,
+		    'matures_at'=>$maturity,
+	    ]);
+
+    	//create statements
+	    $this->createStatements($user->id,env('STATEMENT_MAKE_INVESTMENT'),$request->amount,$description);
+
+	    alert()->success('You Invested',$description);
+	    return redirect()->back()->with('success',$description);
+    }
+
+	/**
+	 * @param int $amount
+	 * @return int
+	 */
+    public function getDays(int $amount){
+	    if ($amount >= 1000 && $amount <= 5000){
+		    return 3;
+	    }
+	    if ($amount >= 10000 && $amount <= 40000){
+		    return 7;
+	    }
+	    if ($amount > 40000){
+		    return 21;
+	    }
+    }
+
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+    public function getInvestmentStatement(){
+	    $user = auth()->user();
+    	$investments = Invest::query()->where('user_id',$user->id)->orderByDesc('matures_at')->take(20)->get();
+    	return view('user.investments.manage_investments',[
+    		'investments'=>$investments
+	    ]);
+    }
+
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+    public function withdraw(){
+    	return view('user.finance.withdraw',[
+    		'user'=>auth()->user()
+	    ]);
+    }
+
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+    public function postWithdraw(Request $request){
+    	$user = auth()->user();
+    	$balance = $this->getBalance($user->id);
+    	$amount = $request->amount;
+	    $description = "Fund withdrawal of KES ".number_format($amount);
+	    $transactionCharges = $amount*0.075 +15;
+
+    	if ($amount > $balance){
+		    alert()->error('error',"Your balance is insufficient. Kindly top up here.");
+		    return redirect()->back()->with('error',"Your balance is insufficient. Kindly  <a href='".route('top.up')."'>top up here</a>.");
+	    }
+
+	    //create statement
+	    $this->createStatements($user->id,env('STATEMENT_WITHDRAWAL'),$amount,$description);
+	    $this->createStatements($user->id,env('STATEMENT_WITHDRAWAL_CHARGES'),$transactionCharges,"Withdrawal transaction charges");
+
+	    //send notification
+	    (new HomeController())->sendNotification($user->id,'Withdrawal',$description);
+
+	    //admin transaction charges
+	    (new AdminController())->createStatement(env('ADMIN_STATEMENT_USER_WITHDRAWAL_CHARGES'),$transactionCharges,"User withdrawal transaction charges.");
+
+	    alert()->success('success',"Your withdrawal of KES ".number_format($amount)." has been received. Our technical team will review your transaction and complete it in time.");
+	    return redirect()->back()->with('success',"Your withdrawal of KES ".number_format($amount)." has been received. Our technical team will review your transaction and complete it in time.");
     }
 }

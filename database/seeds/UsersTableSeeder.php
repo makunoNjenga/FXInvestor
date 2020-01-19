@@ -23,8 +23,8 @@ class UsersTableSeeder extends Seeder
 
 	    \Illuminate\Support\Facades\DB::table('users')->insert($users);
 
-	    (new \App\Http\Controllers\HomeController())->createStatements(1,1,10000,"Test funds");
-	    (new \App\Http\Controllers\HomeController())->createStatements(2,1,10000,"Test funds");
-	    (new \App\Http\Controllers\HomeController())->createStatements(3,1,10000,"Test funds");
+	    (new \App\Http\Controllers\HomeController())->createStatements(1,1,100000,"Test funds");
+	    (new \App\Http\Controllers\HomeController())->createStatements(2,1,100000,"Test funds");
+	    (new \App\Http\Controllers\HomeController())->createStatements(3,1,100000,"Test funds");
     }
 }

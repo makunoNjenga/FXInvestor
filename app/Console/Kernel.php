@@ -31,6 +31,12 @@ class Kernel extends ConsoleKernel
 	    $schedule->call(function () {
 		    PageController::deleteOlderNotifications();
 	    })->name("deleteOlderNotifications")->withoutOverlapping(30);
+
+	    //investment cron
+	    $schedule->call(function () {
+		    (new PageController())->maturedInvestments();
+	    })->dailyAt("00:30");
+
     }
 
     /**

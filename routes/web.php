@@ -39,6 +39,14 @@ Route::get('/purchase/{type}/{id}', 'HomeController@purchase')->name('purchase')
 Route::get('/purchase/betting/{user_id}/{odd_id}', 'HomeController@purchaseBettingOdds')->name('purchase.betting.odds');
 Route::get('/purchase/trading/signals/{user_id}/{signal_id}', 'HomeController@purchaseTradingSignals')->name('purchase.trading.signals');
 
+Route::get('/invest', 'HomeController@invest')->name('invest');
+Route::post('/invest', 'HomeController@postInvest')->name('invest');
+Route::get('/invest/statement', 'HomeController@getInvestmentStatement')->name('invest.statement');
+
+Route::get('/withdraw', 'HomeController@withdraw')->name('withdraw');
+Route::post('/withdraw', 'HomeController@postWithdraw')->name('withdraw');
+
+
 Route::group([
 	'prefix' => 'admin',
 ], function () {

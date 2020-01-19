@@ -40,4 +40,7 @@ class User extends Authenticatable
     public function notif(){
     	return $this->hasMany(Notif::class);
     }
+    public function investments(){
+    	return $this->hasMany(Invest::class);
+    }
 }
