@@ -67,7 +67,7 @@ class RegisterController extends Controller
          $user = User::query()->create([
             'name' => $data['name'],
             'phone_number' => $data['phone_number'],
-	        'pin'=>Hash::make($data['pin'])
+	        'password'=>Hash::make($data['pin'])
         ]);
 
          //send sms and notification
@@ -75,19 +75,5 @@ class RegisterController extends Controller
 //	    PageController::sendNotification($user->id,'Login Pin', $message);
 
 	    return $user;
-    }
-
-	/**
-	 * @return int
-	 */
-    public function generatePin(){
-    	$pin = rand(1000,9999);
-
-    	$exits = User::query()->where('pin',$pin)->first();
-
-    	if ($exits){
-    		return $this->generatePin();
-	    }
-	    return $pin;
     }
 }
