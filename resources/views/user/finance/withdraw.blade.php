@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
-	    <span class="alert alert-info text-center">
+	    <span class="alert alert-info text-center col-sm-12">
 		    <label>Withdraw Info</label><br>
 		    Withdrawal requests takes 1 ~ 3 days to be processed.
 		    <br>
