@@ -11,6 +11,9 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', 'HomeController@index')->name('home');
 
 /**
@@ -50,28 +53,28 @@ Route::post('/withdraw', 'HomeController@postWithdraw')->name('withdraw');
 
 
 Route::group([
-	'prefix' => 'admin',
+    'prefix' => 'admin',
 ], function () {
-	Route::get('/login', 'Auth\LoginController@getAdminLogin')->name('admin.login');
-	Route::post('/login', 'Auth\LoginController@postAdminLogin')->name('admin.login');
-	Route::get('/home', 'AdminController@home')->name('admin.home');
-	Route::get('/logout', 'AdminController@logout')->name('admin.logout');
+    Route::get('/login', 'Auth\LoginController@getAdminLogin')->name('admin.login');
+    Route::post('/login', 'Auth\LoginController@postAdminLogin')->name('admin.login');
+    Route::get('/home', 'AdminController@home')->name('admin.home');
+    Route::get('/logout', 'AdminController@logout')->name('admin.logout');
 
-	Route::get('/sport/betting', 'AdminController@sportBetting')->name('admin.sport.betting');
-	Route::post('/sport/betting', 'AdminController@postSportBetting')->name('admin.sport.betting');
+    Route::get('/sport/betting', 'AdminController@sportBetting')->name('admin.sport.betting');
+    Route::post('/sport/betting', 'AdminController@postSportBetting')->name('admin.sport.betting');
 
-	Route::get('/trading/signal', 'AdminController@getTradingSignal')->name('admin.trading.signal');
-	Route::post('/trading/signal', 'AdminController@postTradingSignal')->name('admin.trading.signal');
+    Route::get('/trading/signal', 'AdminController@getTradingSignal')->name('admin.trading.signal');
+    Route::post('/trading/signal', 'AdminController@postTradingSignal')->name('admin.trading.signal');
 
-	Route::get('/manage/trading/signal', 'AdminController@getManageTradingSignal')->name('admin.manage.trading.signal');
-	Route::get('/manage/trading/signal/delete/{id}', 'AdminController@deleteTradingSignal')->name('admin.manage.delete.trading.signal');
-	Route::get('/manage/trading/signal/outcome/{id}', 'AdminController@outcomeTradingSignal')->name('admin.manage.outcome.trading.signal');
-	Route::post('/manage/trading/signal/outcome', 'AdminController@postOutcomeTradingSignal')->name('admin.manage.post.outcome.trading.signal');
+    Route::get('/manage/trading/signal', 'AdminController@getManageTradingSignal')->name('admin.manage.trading.signal');
+    Route::get('/manage/trading/signal/delete/{id}', 'AdminController@deleteTradingSignal')->name('admin.manage.delete.trading.signal');
+    Route::get('/manage/trading/signal/outcome/{id}', 'AdminController@outcomeTradingSignal')->name('admin.manage.outcome.trading.signal');
+    Route::post('/manage/trading/signal/outcome', 'AdminController@postOutcomeTradingSignal')->name('admin.manage.post.outcome.trading.signal');
 
-	Route::get('/manage/sports/betting', 'AdminController@getManageBettingTips')->name('admin.manage.sport.betting');
-	Route::get('/manage/sports/betting/delete/{id}', 'AdminController@deleteSportBetting')->name('admin.manage.delete.sports.betting');
-	Route::get('/manage/betting/odd/outcome/{id}', 'AdminController@outcomeBettingOdd')->name('admin.manage.outcome.betting.odds');
-	Route::post('/manage/trading/betting/odd', 'AdminController@postOutcomeBettingOdd')->name('admin.manage.post.outcome.betting.odd');
+    Route::get('/manage/sports/betting', 'AdminController@getManageBettingTips')->name('admin.manage.sport.betting');
+    Route::get('/manage/sports/betting/delete/{id}', 'AdminController@deleteSportBetting')->name('admin.manage.delete.sports.betting');
+    Route::get('/manage/betting/odd/outcome/{id}', 'AdminController@outcomeBettingOdd')->name('admin.manage.outcome.betting.odds');
+    Route::post('/manage/trading/betting/odd', 'AdminController@postOutcomeBettingOdd')->name('admin.manage.post.outcome.betting.odd');
 
-	Route::get('/statements', 'AdminController@statements')->name('admin.statements');
+    Route::get('/statements', 'AdminController@statements')->name('admin.statements');
 });

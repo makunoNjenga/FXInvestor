@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\PageController;
-use App\User;
 use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -44,7 +45,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -56,24 +57,24 @@ class RegisterController extends Controller
         ]);
     }
 
-	/**
-	 * Create a new user instance after a valid registration.
-	 * @param array $data
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
-	 */
+    /**
+     * Create a new user instance after a valid registration.
+     * @param array $data
+     * @return Builder|Model
+     */
     protected function create(array $data)
     {
 //	    $pin = $this->generatePin();
-         $user = User::query()->create([
+        $user = User::query()->create([
             'name' => $data['name'],
             'phone_number' => $data['phone_number'],
-	        'password'=>Hash::make($data['pin'])
+            'password' => Hash::make($data['pin'])
         ]);
 
-         //send sms and notification
+        //send sms and notification
 //	    $message = "Your login pin is $pin. Keep it a secret.";
 //	    PageController::sendNotification($user->id,'Login Pin', $message);
 
-	    return $user;
+        return $user;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +17,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::get('log/viewer', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 Route::post('b2c/callback/', 'HomeController@b2cCallback')->name('b2c.callback');

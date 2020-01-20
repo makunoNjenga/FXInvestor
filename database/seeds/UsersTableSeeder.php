@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -11,20 +14,20 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-	    $users = [
-		    [
-			    'name' => 'Simon Njenga',
-			    'phone_number' => '0706256130',
-			    'password' => \Illuminate\Support\Facades\Hash::make('2020'),
-			    'created_at' => \Illuminate\Support\Carbon::now(),
-			    'updated_at' => \Illuminate\Support\Carbon::now(),
-		    ],
-	    ];
+        $users = [
+            [
+                'name' => 'Simon Njenga',
+                'phone_number' => '0706256130',
+                'password' => Hash::make('2020'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
 
-	    \Illuminate\Support\Facades\DB::table('users')->insert($users);
+        DB::table('users')->insert($users);
 
-	    (new \App\Http\Controllers\HomeController())->createStatements(1,1,100000,"Test funds");
-	    (new \App\Http\Controllers\HomeController())->createStatements(2,1,100000,"Test funds");
-	    (new \App\Http\Controllers\HomeController())->createStatements(3,1,100000,"Test funds");
+        (new HomeController())->createStatements(1, 1, 0, "Test funds");
+        (new HomeController())->createStatements(2, 1, 0, "Test funds");
+        (new HomeController())->createStatements(3, 1, 0, "Test funds");
     }
 }

@@ -20,22 +20,22 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-	    $schedule->call(function () {
-		    PageController::processBulkNotifications();
-	    })->name("Bulk_Notifications")->withoutOverlapping(15);
-	    $schedule->call(function () {
-		    PageController::deleteOlderNotifications();
-	    })->name("deleteOlderNotifications")->withoutOverlapping(30);
+        $schedule->call(function () {
+            PageController::processBulkNotifications();
+        })->name("Bulk_Notifications")->withoutOverlapping(15);
+        $schedule->call(function () {
+            PageController::deleteOlderNotifications();
+        })->name("deleteOlderNotifications")->withoutOverlapping(30);
 
-	    //investment cron
-	    $schedule->call(function () {
-		    (new PageController())->maturedInvestments();
-	    })->dailyAt("00:30");
+        //investment cron
+        $schedule->call(function () {
+            (new PageController())->maturedInvestments();
+        })->dailyAt("00:30");
 
     }
 
@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

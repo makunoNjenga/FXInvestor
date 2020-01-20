@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BulkNotification extends Model
 {
-	protected $fillable = [
-		'receiver', 'sent', 'subject', 'message'
-	];
+    protected $fillable = [
+        'receiver', 'sent', 'subject', 'message'
+    ];
 }

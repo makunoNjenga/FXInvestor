@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminsTableSeeder extends Seeder
 {
@@ -11,18 +13,18 @@ class AdminsTableSeeder extends Seeder
      */
     public function run()
     {
-	    $users = [
-		    [
-			    'name' => 'Simon Njenga',
-			    'phone_number' => '0706256130',
-			    'email' => 'makuno.biz@gmail.com',
-			    'password' => \Illuminate\Support\Facades\Hash::make('0706256130'),
-			    'created_at' => \Illuminate\Support\Carbon::now(),
-			    'updated_at' => \Illuminate\Support\Carbon::now(),
-		    ],
-	    ];
+        $users = [
+            [
+                'name' => 'Simon Njenga',
+                'phone_number' => '0706256130',
+                'email' => 'makuno.biz@gmail.com',
+                'password' => Hash::make('0706256130'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
 
-	    \Illuminate\Support\Facades\DB::table('admins')->insert($users);
+        DB::table('admins')->insert($users);
 
     }
 }
