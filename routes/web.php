@@ -26,6 +26,8 @@ Route::get('/sport/betting', 'HomeController@sportBetting')->name('sport.betting
 Route::get('/trading/signals', 'HomeController@tradingSignals')->name('trading.signals');
 
 Route::get('/top/up', 'HomeController@topUp')->name('top.up');
+Route::post('/deposit', 'HomeController@appC2BSTKPush')->name('deposit');
+
 Route::get('/statements', 'HomeController@statements')->name('statements');
 Route::get('/history', 'HomeController@history')->name('history');
 Route::get('/profile', 'HomeController@profile')->name('profile');

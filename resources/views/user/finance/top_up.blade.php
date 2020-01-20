@@ -1,18 +1,19 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
-	    <span class="alert alert-info text-center">
-		    <label>Guide</label><br>
+	    <span class="alert alert-info text-center col-sm-12">
+		    <label>Deposit Guide</label><br>
 		    We have made top up so easy. Just add the amount and click deposit. A pop up message will be sent to your. Input the pin to complete transaction.
 		    <br>
 		    <br>
 		    <label>Your current balance is <span class="text-success">KES {{ number_format((new \App\Http\Controllers\HomeController())->getBalance($user->id)) }}</span> </label>
 	    </span>
-
+@include('inc.messages')
         <div class="col-sm-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="form" action="" method="post">
+                    <form id="form" action="{{ route('deposit') }}" method="post">
+	                    @csrf
 	                    <div class="form-group">
 		                    <label>Amount: </label>
 		                    <input class="form-control border-radius-20" type="number" name="amount" required id="amount">

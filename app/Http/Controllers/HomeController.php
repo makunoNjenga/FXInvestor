@@ -12,9 +12,13 @@ use App\Statement;
 use App\TradingSignal;
 use App\User;
 use Carbon\Carbon;
+use function GuzzleHttp\Promise\exception_for;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use PhpParser\Node\Scalar\String_;
+use TPay\API\API\AppC2BSTKPush;
 
 class HomeController extends Controller
 {
@@ -393,4 +397,55 @@ class HomeController extends Controller
 	    alert()->success('success',"Your withdrawal of KES ".number_format($amount)." has been received. Our technical team will review your transaction and complete it in time.");
 	    return redirect()->back()->with('success',"Your withdrawal of KES ".number_format($amount)." has been received. Our technical team will review your transaction and complete it in time.");
     }
+
+	/**
+	 * ------------------------------------
+	 * Making app stk push request for c2b  [ POST Request ]
+	 * ------------------------------------
+	 * @param Request $request
+	 * @return \Exception|\GuzzleHttp\Exception\GuzzleException|string
+	 */
+	public function appC2BSTKPush(Request $request) {
+		$user = auth()->user();
+		 $amount =  $request->amount;
+		 $phone_number = "254".ltrim($user->phone_number,'0');
+		try {
+			//Set request options as shown here
+				$options = [
+				'secretCode' => config("tpay.app_secret_code"),//This has to be your app T_PAY_APP_SECRET_CODE
+				'phoneNumber' => (integer)$phone_number,//The phone number has to be 2547xxxxxxx
+				'referenceCode' => "TP".Carbon::now()->timestamp,//The secret code should be unique in every request you send and must start with TPXXXX
+				'amount' => (int)$amount,//Amount has to be an integer and less than or equal to KES 70000
+				'resultURL' => route('b2c.callback'),//This has to be your callback i.e https://mydomain/callback or http://mydomain/callback. Also note that this has to be a post callback so remember to use post in your callback.
+			];
+
+			//make the c2b stk push here
+			$response = AppC2BSTKPush::appC2BSTKPush($options);
+
+			//continue with what you what to do with the $response here
+			$response = json_decode($response);
+
+			if (!$response->success){
+				throwException(exception_for('error'));
+			}
+
+			//
+			$message = "Mpesa deposit of KES ".number_format($response->data->amount);
+			$this->createStatements($user->id,env('STATEMENT_MPESA'),$response->data->amount,$message);
+
+			self::sendNotification($user->id,'Mpesa Deposit',$message);
+
+			alert()->error('success',"A pop up message has been sent to your phone number to complete the transaction.");
+			return redirect()->back()->with('error','A pop up message has been sent to your phone number to complete the transaction.');
+		} catch (\Exception $exception) {
+			//TODO If an exception occurs
+			Log::error($exception);
+			alert()->error('Error',"An error was encountered. Kindly try again later.");
+			return redirect()->back()->with('error','An error was encountered. Kindly try again later.');
+		}
+	}
+
+	public function b2cCallback(Request $request){
+
+	}
 }

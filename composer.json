@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.1.3",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^6.5",
         "laravel/framework": "5.8.*",
         "laravel/horizon": "^3.2",
         "laravel/tinker": "^1.0",
@@ -19,7 +19,8 @@
         "rap2hpoutre/laravel-log-viewer": "^1.3",
         "realrashid/sweet-alert": "^3.1",
         "snowfire/beautymail": "dev-master",
-        "spatie/laravel-backup": "^6.3"
+        "spatie/laravel-backup": "^6.3",
+        "tecksolke-tpay/app-api": "^1.9"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
