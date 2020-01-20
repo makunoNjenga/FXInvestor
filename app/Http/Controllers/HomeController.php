@@ -432,6 +432,7 @@ class HomeController extends Controller
      * ------------------------------------
      * @param Request $request
      * @return RedirectResponse
+     * @throws Exception
      */
     public function appC2BSTKPush(Request $request)
     {
@@ -453,11 +454,11 @@ class HomeController extends Controller
 
             dd($response);
 
-            //continue with what you what to do with the $response here
+//            continue with what you what to do with the $response here
             $response = json_decode($response);
 
             if (!$response->success) {
-                throwException(exception_for('error'));
+                // continue
             }
 
             //
